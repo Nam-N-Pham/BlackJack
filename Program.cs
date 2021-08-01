@@ -101,11 +101,12 @@ namespace BlackJack
 
         public void PrintHand()
         {
+            Console.Write("You current hand is: ");
             foreach (Card card in this.cardsInHand)
             {
-                Console.WriteLine("You current hand is:");
-                Console.WriteLine(card.Rank + " of " + card.Suit);
+                Console.Write(card.Rank + " of " + card.Suit + ", ");
             }
+            Console.WriteLine();
         }
     }
 
@@ -118,6 +119,8 @@ namespace BlackJack
             string pressToPlay = Console.ReadLine();
 
             Boolean play = true;
+            Boolean quit = false;
+            Boolean playAgain = false;
             while (play)
             {
                 Deck newDeck = new Deck();
@@ -134,11 +137,135 @@ namespace BlackJack
                 playerHand.PrintHand();
                 if (playerHand.HandValue() > 21)
                 {
-
+                    Console.WriteLine("You busted, you lose!");
+                    Console.WriteLine("Would you like to play again? Type Y to play again or N to quit.");
+                    string answer = Console.ReadLine().ToLower();
+                    if (answer == "y")
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
 
-                Console.WriteLine("Type \"Hit\" to hit or \"Stand\" to stand");
-                string hitOrStand = Console.ReadLine();
+                Boolean playerTurn = true;
+                while (playerTurn)
+                {
+                    Console.WriteLine("Type \"Hit\" to hit or \"Stand\" to stand");
+                    string hitOrStand = Console.ReadLine().ToLower();
+
+                    if (hitOrStand == "hit")
+                    {
+                        playerHand.AddCard(newDeck.Deal());
+                        playerHand.PrintHand();
+
+                        if (playerHand.HandValue() > 21)
+                        {
+                            Console.WriteLine("You busted, you lose!");
+                            Console.WriteLine("Would you like to play again? Type Y to play again or N to quit.");
+                            string answer = Console.ReadLine().ToLower();
+                            if (answer == "y")
+                            {
+                                playAgain = true;
+                                break;
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if (playAgain)
+                {
+                    continue;
+                }
+                playAgain = false;
+
+                Boolean dealerTurn = true;
+                while (dealerTurn)
+                {
+                    dealerHand.PrintHand();
+                    if (dealerHand.HandValue() > 21)
+                    {
+                        Console.WriteLine("Dealer busted, you win!");
+                        Console.WriteLine("Would you like to play again? Type Y to play again or N to quit.");
+                        string answer = Console.ReadLine().ToLower();
+                        if (answer == "y")
+                        {
+                            playAgain = true;
+                            break;
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                    else if (dealerHand.HandValue() >= 17)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        dealerHand.AddCard(newDeck.Deal());
+                    }
+                }
+
+                if (playAgain)
+                {
+                    continue;
+                }
+                playAgain = false;
+
+                if (playerHand.HandValue() > dealerHand.HandValue())
+                {
+                    Console.WriteLine("You hand is higher, you win!");
+                    Console.WriteLine("Would you like to play again? Type Y to play again or N to quit.");
+                    string answer = Console.ReadLine().ToLower();
+                    if (answer == "y")
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                else if (playerHand.HandValue() < dealerHand.HandValue())
+                {
+                    Console.WriteLine("You hand is lower, you lose!");
+                    Console.WriteLine("Would you like to play again? Type Y to play again or N to quit.");
+                    string answer = Console.ReadLine().ToLower();
+                    if (answer == "y")
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Your hand is tied with the dealer's hand, you lose!");
+                    Console.WriteLine("Would you like to play again? Type Y to play again or N to quit.");
+                    string answer = Console.ReadLine().ToLower();
+                    if (answer == "y")
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
             }
         }
     }
