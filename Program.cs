@@ -101,7 +101,6 @@ namespace BlackJack
 
         public void PrintHand()
         {
-            Console.Write("You current hand is: ");
             foreach (Card card in this.cardsInHand)
             {
                 Console.Write(card.Rank + " of " + card.Suit + ", ");
@@ -115,11 +114,10 @@ namespace BlackJack
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to BlackjackCS");
-            Console.WriteLine("Press any key to play");
+            Console.WriteLine("Enter any key to play");
             string pressToPlay = Console.ReadLine();
 
             Boolean play = true;
-            Boolean quit = false;
             Boolean playAgain = false;
             while (play)
             {
@@ -134,6 +132,7 @@ namespace BlackJack
                 dealerHand.AddCard(newDeck.Deal());
                 dealerHand.AddCard(newDeck.Deal());
 
+                Console.Write("Your hand is: ");
                 playerHand.PrintHand();
                 if (playerHand.HandValue() > 21)
                 {
@@ -150,6 +149,7 @@ namespace BlackJack
                     }
                 }
 
+                playAgain = false;
                 Boolean playerTurn = true;
                 while (playerTurn)
                 {
@@ -159,6 +159,7 @@ namespace BlackJack
                     if (hitOrStand == "hit")
                     {
                         playerHand.AddCard(newDeck.Deal());
+                        Console.Write("Your hand is: ");
                         playerHand.PrintHand();
 
                         if (playerHand.HandValue() > 21)
@@ -192,6 +193,7 @@ namespace BlackJack
                 Boolean dealerTurn = true;
                 while (dealerTurn)
                 {
+                    Console.Write("Dealer's hand is: ");
                     dealerHand.PrintHand();
                     if (dealerHand.HandValue() > 21)
                     {
